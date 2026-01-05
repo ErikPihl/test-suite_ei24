@@ -18,6 +18,14 @@
 * Läs igenom [följande dokument](./cpp/) för bakgrund gällande C++, klasser och interfaces.
 * Följ installations och användarinstruktionerna [här](../../README.md#installations--och-användarinstruktioner).
 
+### Köra tester
+Navigera till testmappen och kör testerna via kommandot `make`:
+
+```bash
+cd library/test
+make
+```
+
 ### Demonstration
 * En smart temperatursensor implementeras i helklass.
 * Tester skrivs för en linjär regressionsalgoritm i helklass.
