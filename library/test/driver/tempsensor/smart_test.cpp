@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 
 #include "arch/avr/hw_platform.h"
-#include "driver/adc/atmega328p.h"
+#include "driver/adc/stub.h"
 #include "driver/tempsensor/smart.h"
 #include "utils/utils.h"
 
@@ -19,6 +19,30 @@ namespace driver
 {
 namespace
 {
+// -----------------------------------------------------------------------------
+constexpr double computeInputVoltage(const std::uint16_t adcVal) noexcept
+{
+    constexpr double supplyVoltage{5.0};
+    constexpr std::uint16_t adcMax{1023U};
+
+    // Convert the ADC value to a voltage.
+    return static_cast<double>(adcVal) / adcMax * supplyVoltage;
+}
+
+// -----------------------------------------------------------------------------
+constexpr std::int16_t convertToTemp(const double inputVoltage) noexcept
+{
+    // Convert voltage to temperature: T(°C) = 100 * V - 50.
+    return utils::round<std::int16_t>(100.0 * inputVoltage - 50.0); 
+}
+
+// -----------------------------------------------------------------------------
+constexpr std::int16_t convertToTemp(const std::uint16_t adcVal) noexcept
+{
+    // Convert ADC value to voltage, then to temperature.
+    return convertToTemp(computeInputVoltage(adcVal));
+}
+
 /**
  * @brief Smart temp sensor initialization test.
  * 
